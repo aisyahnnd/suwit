@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Suwit</title>
+    <style>
+        .container {
+            width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .kotak-atas {
+            background-image: url(img/bg.png);
+            background-position-y: -25px;
+            height: 300px;
+            border: 5px solid white;
+            border-radius: 50px 50px 0 0;
+        }
+
+        .kotak-bawah {
+            background-image: url(img/bg.png);
+            background-position-y: -330px;
+            height: 300px;
+            border: 5px solid white;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .hasil {
+            width: 100px;
+            height: 50px;
+            border: 5px solid salmon;
+            border-radius: 25%;
+            position: absolute;
+            margin: 0 auto;
+            top: 45%;
+            left: 290px;
+            background-color: white;
+            border-radius: 30px;
+            text-align: center;
+            color: salmon;
+        }
+
+        .hasil span {
+            font-weight: bold;
+            line-height: 50px;
+        }
+
+        .kotak-atas img {
+            width: 150px;
+            margin: 50px 260px;
+        }
+
+        .kotak-bawah img {
+            margin-left: 50px;
+            margin-right: 10px;
+            margin-top: 80px;
+            transition: 0.3s;
+            border-radius: 150px;
+        }
+
+        .kotak-bawah img:hover {
+            box-shadow: 0px 0px 10px 5px rgb(255, 255, 255);
+            /* filter: drop-shadow(5px 5px 5px, rgba(0, 0, 0, 0.7)); */
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="kotak-atas">
+            <img id="komputer" class="komputer" src="img/orang.png">
+        </div>
+        <div class="kotak-bawah">
+            <img id="gajah" class="pemain" src="img/gajah.png" style="width: 150px;">
+            <img id="orang" class="pemain" src="img/orang.png" style="width: 150px;">
+            <img id="semut" class="pemain" src="img/semut.png" style="width: 150px;">
+        </div>
+        <div class="hasil">
+            <span id="hasil">MENANG!</span>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('.pemain').click(function () {
+            let pilihan = $(this).attr('id');
+            console.log(pilihan);
+
+            console.log();
+            let bot = Math.random();
+            let pilihan_bot = '';
+
+            if (bot >= 0 && bot <= 0.3) {
+                pilihan_bot = 'gajah';
+            } else if (bot > 0.3 && bot <= 0.7) {
+                pilihan_bot = 'orang';
+            } else {
+                pilihan_bot = 'semut';
+            }
+
+            console.log(pilihan_bot);
+
+
+            let hasil = '';
+            if (pilihan == 'gajah') {
+                if (pilihan_bot == 'gajah') {
+                    hasil = 'SERI';
+                } else if (pilihan_bot == 'orang') {
+                    hasil = 'MENANG';
+                } else {
+                    hasil = 'KALAH';
+                }
+            } else if (pilihan == 'orang') {
+                if (pilihan_bot == 'orang') {
+                    hasil = 'SERI';
+                } else if (pilihan_bot == 'semut') {
+                    hasil = 'MENANG';
+                } else {
+                    hasil = 'KALAH';
+                }
+            } else if (pilihan == 'semut') {
+                if (pilihan_bot == 'semut') {
+                    hasil = 'SERI';
+                } else if (pilihan_bot == 'gajah') {
+                    hasil = 'MENANG';
+                } else {
+                    hasil = 'KALAH';
+                }
+            } else {
+                hasil = 'KALAH';
+            }
+
+            console.log(hasil);
+
+            $('#hasil').text(hasil);
+            $('#komputer').attr('src', 'img/' + pilihan_bot + '.png');
+
+            let random = ['gajah', 'orang', 'semut'];
+            let index = 0;
+            let hitung = 0;
+
+            // setInterval untuk looping di setiap x milisecond
+            let putar = setInterval(function () {
+                if (index == 3) { // Jika index = 3, kembalikan ke awal gambar lagi di index 0
+                    index = 0;
+                }
+
+                $('#komputer').attr('src', 'img/' + random[index] + '.png');
+                index++;
+                hitung++;
+
+                // Jika sudah berputar 10 kali, hentikan
+                if (hitung == 10) {
+                    clearInterval(putar); // Untuk keluar dari looping interval
+                    $('#hasil').text(hasil);
+                    $('#komputer').attr('src', 'img/' + pilihan_bot + '.png');
+                }
+            }, 100); // Looping setiap 100ms
+        });
+    </script>
+</body>
+
+</html>
